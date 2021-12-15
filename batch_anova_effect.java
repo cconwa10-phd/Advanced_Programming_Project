@@ -6,7 +6,7 @@ import org.apache.commons.math3.stat.inference.OneWayAnova;
 import com.opencsv.*;
 public class batch_anova_effect
 {
-    public static ArrayList<String[]> read_file_nist(File myFile, String indexedRows, String subString, int featuresPerBatch, double anovaCuttoff) throws IOException {
+    public static ArrayList<String[]> read_file_nist(File myFile, String subString, int featuresPerBatch, double anovaCuttoff) throws IOException {
         String line = "";
         String splitBy = ",";
         BufferedReader file = new BufferedReader(new FileReader(myFile));
@@ -28,7 +28,7 @@ public class batch_anova_effect
             else
             {
                 String[] body = line.split(splitBy);
-                ArrayList<String> bodyArray= (ArrayList<String>) loopRow(body, indexedRows);
+                ArrayList<String> bodyArray= (ArrayList<String>) loopRow(body);
                 ArrayList<double[]> indices = (ArrayList<double[]>) findIndices(header, bodyArray, subString, featuresPerBatch);
                 if(!(indices.size() < 2))
                 {
@@ -46,7 +46,7 @@ public class batch_anova_effect
         }
     return newFile;
     }
-    private static List<String> loopRow(String[] splitRows, String indexedRows)
+    private static List<String> loopRow(String[] splitRows)
     {
         List<String> line = new ArrayList<>();
         line.addAll(Arrays.asList(splitRows));
@@ -108,7 +108,7 @@ public class batch_anova_effect
         int featuresPerBatch = 2;
         double anovaCuttoff = 0.02;
         String path = "/Users/cconwa10/Desktop/";
-        ArrayList<String[]> cleanedFile = read_file_nist(new File(path + "final_peaks_new.csv"), "True", "NIST", featuresPerBatch, anovaCuttoff);
+        ArrayList<String[]> cleanedFile = read_file_nist(new File(path + "final_peaks_new.csv"), "NIST", featuresPerBatch, anovaCuttoff);
         newBetweenBatchBlank(path + "final_peaks_cleaned.csv", cleanedFile);
     }
 }
