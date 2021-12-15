@@ -1,8 +1,6 @@
 package com.example.helloworld;
 import java.io.*;
 import java.util.*;
-import java.util.Random;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.inference.OneWayAnova;
 import com.opencsv.*;
@@ -15,7 +13,6 @@ public class batch_anova_effect
         ArrayList<String> header = new ArrayList<>();
         ArrayList<String[]> newFile = new ArrayList<>();
         int count = 0;
-        //String[] firstLine = file.readLine().split(splitBy);
         while((line = file.readLine()) != null)
         {
             if(count == 0)
@@ -26,10 +23,6 @@ public class batch_anova_effect
                 String[] headerStr = new String[header.size()];
                 headerStr = header.toArray(headerStr);
                 newFile.add(headerStr);
-//                if(indexedRows.equalsIgnoreCase("true"))
-//                {
-//                    header.remove(0);
-//                }
                 count += 1;
             }
             else
@@ -37,7 +30,6 @@ public class batch_anova_effect
                 String[] body = line.split(splitBy);
                 ArrayList<String> bodyArray= (ArrayList<String>) loopRow(body, indexedRows);
                 ArrayList<double[]> indices = (ArrayList<double[]>) findIndices(header, bodyArray, subString, featuresPerBatch);
-                //double anovaValue = 0;
                 if(!(indices.size() < 2))
                 {
                     double anovaValue = anovaTest(indices);
@@ -49,28 +41,15 @@ public class batch_anova_effect
                         newFile.add(bodyArrayStr);
                     }
                 }
-//                if(anovaValue >= anovaCuttoff)
-//                {
-//                    bodyArray.add(String.valueOf(anovaValue));
-//                    String[] bodyArrayStr = new String[bodyArray.size()];
-//                    bodyArrayStr = bodyArray.toArray(bodyArrayStr);
-//                    newFile.add(bodyArrayStr);
-//                }
                 count += 1;
             }
         }
-
-        //System.out.println(header);
     return newFile;
     }
     private static List<String> loopRow(String[] splitRows, String indexedRows)
     {
         List<String> line = new ArrayList<>();
         line.addAll(Arrays.asList(splitRows));
-//        if(indexedRows.equalsIgnoreCase("true"))
-//        {
-//            line.remove(0);
-//        }
         return line;
     }
     private static List<double[]> findIndices(List<String> header, List<String> body, String subString, int featuresPerBatch)
@@ -86,7 +65,6 @@ public class batch_anova_effect
                 {
                     if(body.get(x).equals(""))
                     {
-                        //dArray = ArrayUtils.add(dArray,0d);
                         indexBody.clear();
                         break;
                     }
